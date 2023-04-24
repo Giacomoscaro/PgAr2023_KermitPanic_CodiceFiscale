@@ -5,7 +5,7 @@ public class Main {
         System.out.println(d.toString());
         CFManager c = new CFManager();
         for (int i=0; i<10; i++)
-            System.out.println(c.getLista_persone().get(i));
+            System.out.println(c.getInput_persone().get(i));
     }
     
    

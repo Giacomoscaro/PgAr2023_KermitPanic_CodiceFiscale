@@ -25,9 +25,31 @@ public class CodiceFiscale {
     															put('S', Data.Mese.NOVEMBRE);
     															put('T', Data.Mese.DICEMBRE);
     														}};
-	
-	String codice;
-    static boolean isValid(){
+	public static final HashMap<Data.Mese,Character>MeseCarattere = new HashMap<Data.Mese,Character>()
+	{{  put(Data.Mese.GENNAIO, 'A');
+		put(Data.Mese.FEBBRAIO, 'B');
+		put(Data.Mese.MARZO, 'C');
+		put(Data.Mese.APRILE, 'D');
+		put(Data.Mese.MAGGIO, 'E');
+		put(Data.Mese.GIUGNO, 'H');
+		put(Data.Mese.LUGLIO, 'L');
+		put(Data.Mese.AGOSTO, 'M');
+		put(Data.Mese.SETTEMBRE, 'P');
+		put(Data.Mese.OTTOBRE, 'R');
+		put(Data.Mese.NOVEMBRE, 'S');
+		put(Data.Mese.DICEMBRE, 'T');
+	}};
+	private String codice;
+
+	public CodiceFiscale(String codice) {
+		this.codice = codice;
+	}
+
+	public String getCodice() {
+		return codice;
+	}
+
+	static boolean isValid(){
         boolean valido = true;
 
         return valido;
