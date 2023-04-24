@@ -46,13 +46,25 @@ public class Data {
      * @param mese carattere del mese secondo la codifica nel codice fiscale
      * @param anno
      */
-    public Data(int giorno, char mese, int anno){
+    public Data(int giorno, Mese mese, int anno){
     		this.giorno=giorno;
     		this.anno=anno;
-    		this.mese = CodiceFiscale.CarattereMese.get(mese);
+    		this.mese = mese;
     }
-    
-    /**
+
+	public int getGiorno() {
+		return giorno;
+	}
+
+	public Mese getMese() {
+		return mese;
+	}
+
+	public int getAnno() {
+		return anno;
+	}
+
+	/**
      * Ritorna una stringa con la data in formato GG/MM/AAAA
      */
     public String toString() {
