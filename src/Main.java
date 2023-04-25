@@ -6,7 +6,7 @@ public class Main {
         CFManager c = new CFManager();
         c.genera_cf();
         for (int i=0; i<10; i++)
-            System.out.println(c.getCf_generati().get(i));
+            System.out.println(c.getCf_generati().get(i).toString());
     }
     
    

@@ -45,14 +45,13 @@ public class CodiceFiscale {
 		this.codice = codice;
 	}
 
-	public String getCodice() {
-		return codice;
-	}
-
 	static boolean isValid(){
         boolean valido = true;
 
         return valido;
     }
+	public String toString(){
+		return codice.toString();
+	}
 
 }
