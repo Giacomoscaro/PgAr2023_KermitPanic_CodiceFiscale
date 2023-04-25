@@ -100,6 +100,7 @@ public class CFManager {
             codice += nome_CF(persona.getNome());
             codice += data_CF(persona.getNascita(), persona.getSesso());
             codice += SiglaComuni.get(persona.getCitta());
+            codice += CodiceFiscale.generaCarattereControllo((codice));
             cf_generati.add(new CodiceFiscale(codice));
         }
     }
@@ -154,14 +155,16 @@ public class CFManager {
         }
         String nome_cf = "";
         int cont = 0;
+        int consonanti_aggiunte = 0;
         if (n_consonanti >= 4) {
             for (int i = 0; i < nome.length(); i++) {
                 if (cont == 3) break;
                 if (nome.charAt(i) != 'A' && nome.charAt(i) != 'E' && nome.charAt(i) != 'I' && nome.charAt(i) != 'O' && nome.charAt(i) != 'U') {
-                    if (cont != 1) {//se le consonanti sono quattro o più si scelgono la prima, terza e quarta consonante, quindi saltiamo la seconda
-                        nome_cf += nome.charAt(i);
-                        cont++;
-                    }
+                       if(consonanti_aggiunte != 1) {
+                           nome_cf += nome.charAt(i);
+                           cont++;
+                       }
+                       consonanti_aggiunte++;
                 }
             }
         } else {
@@ -190,6 +193,16 @@ public class CFManager {
         }
         return nome_cf;
     }
+    /*public int seconda_consonante(String nome){
+        int  consonanti = 0;
+        for(int i=0; i<nome.length(); i++){
+            if (nome.charAt(i) != 'A' && nome.charAt(i) != 'E' && nome.charAt(i) != 'I' && nome.charAt(i) != 'O' && nome.charAt(i) != 'U')
+                consonanti ++;
+            if(consonanti==2)
+                return i;
+        }
+        return -1;
+    }*/
     /**
      * Seleziona le cifre del mese e del giorno e la lettera del mese
      * per il codice fiscale secondo le linee guida
@@ -261,6 +274,7 @@ public class CFManager {
             }
         }
     }};
+
 
 }
 
