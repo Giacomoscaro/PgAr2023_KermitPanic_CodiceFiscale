@@ -7,11 +7,11 @@ public class Persona {
         put('M', Persona.Sesso.Maschio);
         put('F', Persona.Sesso.Femmina);
     }};
-    private String nome;
-    private String cognome;
-    private Sesso sesso;
-    private Data nascita;
-    private String citta;
+    private final String nome;
+    private final String cognome;
+    private final Sesso sesso;
+    private final Data nascita;
+    private final String citta;
     private CodiceFiscale cf;
 
     public Persona(String nome, String cognome, Sesso sesso, Data nascita, String citta) {

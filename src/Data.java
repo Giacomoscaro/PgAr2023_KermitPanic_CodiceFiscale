@@ -1,13 +1,11 @@
 import java.util.HashMap;
-import java.util.Map;
-import java.util.HashMap;
 
 public class Data {
     /**
      * Enum del mese con valori interi corrispondenti
      */
 	public enum Mese{GENNAIO(1),FEBBRAIO(2),MARZO(3),APRILE(4),MAGGIO(5),GIUGNO(6),LUGLIO(7),AGOSTO(8),SETTEMBRE(9),OTTOBRE(10),NOVEMBRE(11),DICEMBRE(12);
-    		private int indice;
+    		private final int indice;
     		private Mese(int indice) {this.indice=indice;} // il costruttore degli enum è sempre private
     		public int getIndice() {return this.indice;} // per restituire il valore numerico di un mese
     }
@@ -34,17 +32,17 @@ public class Data {
     }};
     														
     
-    private int giorno;
+    private final int giorno;
 
-    private Mese mese;
-    private int anno;
+    private final Mese mese;
+    private final int anno;
 
     /**
      * Costruisce una data usando come mese il carattere
      * utilizzanto nel codice fiscale
-     * @param giorno
+     * @param giorno il giorno
      * @param mese carattere del mese secondo la codifica nel codice fiscale
-     * @param anno
+     * @param anno l'anno
      */
     public Data(int giorno, Mese mese, int anno){
     		this.giorno=giorno;

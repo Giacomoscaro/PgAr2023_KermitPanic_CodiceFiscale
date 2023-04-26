@@ -11,16 +11,11 @@ public class CFManager {
     public CFManager() {
     }
 
-    public ArrayList<Persona> getInput_persone() {
-        return input_persone;
-    }
-
-
     /**
      * Legge i dati delle persone da InputPersone.xml e li registra
      * in un ArrayList di Persone
      */
-    public void leggi_nomi() {
+    public void leggi_persone() {
         FileInputStream file;
         XMLInputFactory input = XMLInputFactory.newInstance();
         XMLStreamReader reader = null;
@@ -76,10 +71,6 @@ public class CFManager {
     }
 
     private final ArrayList<CodiceFiscale> cf_generati = new ArrayList<>();
-
-    public ArrayList<CodiceFiscale> getCf_generati() {
-        return cf_generati;
-    }
 
     /**
      * Crea un codice fiscale per ogni persona della lista ricavata dall'input
@@ -185,16 +176,6 @@ public class CFManager {
         }
         return nome_cf;
     }
-    /*public int seconda_consonante(String nome){
-        int  consonanti = 0;
-        for(int i=0; i<nome.length(); i++){
-            if (nome.charAt(i) != 'A' && nome.charAt(i) != 'E' && nome.charAt(i) != 'I' && nome.charAt(i) != 'O' && nome.charAt(i) != 'U')
-                consonanti ++;
-            if(consonanti==2)
-                return i;
-        }
-        return -1;
-    }*/
 
     /**
      * Seleziona le cifre del mese e del giorno e la lettera del mese
@@ -206,7 +187,6 @@ public class CFManager {
      */
     public String data_CF(Data data, Persona.Sesso sesso) {
         String data_cf = "";
-        int f = 0;
         data_cf += (Integer.toString(data.getAnno()).substring(2));//servono solo le ultime due cifre dell'anno
         data_cf += (CodiceFiscale.MeseCarattere.get(data.getMese()));
         int giorno = data.getGiorno();
@@ -264,9 +244,6 @@ public class CFManager {
      */
     private final ArrayList<CodiceFiscale> codici_input = new ArrayList<>();
 
-    public ArrayList<CodiceFiscale> getCodici_input() {
-        return codici_input;
-    }
     FileInputStream file2;
     XMLInputFactory input2 = XMLInputFactory.newInstance();
     XMLStreamReader reader2;
@@ -327,7 +304,7 @@ public class CFManager {
     XMLStreamWriter writer;
     {
         try{//inizializzazione del writer per generare l'xml definitivo
-            risultato = new FileOutputStream("fileXML/Risultato");
+            risultato = new FileOutputStream("fileXML/codiciPersone.xml");
             writer = output.createXMLStreamWriter(risultato);
             writer.writeStartDocument("UTF-8", "1.0");
         }catch (Exception e) {
@@ -339,7 +316,7 @@ public class CFManager {
     /**
      * Usa il writer per scrivere tutti i dati delle persone con la grammatica xml
      * @param writer il writer per accedere al file
-     * @throws XMLStreamException
+     * @throws XMLStreamException in caso di errore di scrittura
      */
     public void scrivi_persone(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement("persone");
@@ -372,7 +349,7 @@ public class CFManager {
     /**
      * Usa il writer per scrivere una lista dei codici fiscali invalidi con la grammatica xml
      * @param writer il writer per accedere al file
-     * @throws XMLStreamException
+     * @throws XMLStreamException in caso di errore di scrittura
      */
     public void scrivi_cf_invalidi(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement("invalidi");
@@ -387,7 +364,7 @@ public class CFManager {
     /**
      * Usa il writer per scrivere una lista dei codici fiscali spaiati con la grammatica xml
      * @param writer il writer per accedere al file
-     * @throws XMLStreamException
+     * @throws XMLStreamException in caso di errore di scrittura
      */
     public void scrivi_cf_spaiati(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement("spaiati");
@@ -403,7 +380,7 @@ public class CFManager {
     /**
      * Raccoglie gli altri metodi di scrittura dati e scrive il file xml definitivo
      * @param writer il writer per accedere al file
-     * @throws XMLStreamException
+     * @throws XMLStreamException in caso di errore di scrittura
      */
     public void scrivi_Risultato(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement("output");
