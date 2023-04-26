@@ -4,6 +4,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.FileInputStream;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 
 public class CodiceFiscale {
@@ -238,15 +239,23 @@ public class CodiceFiscale {
 		else return false;
 	}
 	
-	private static boolean controlloComune(String comune) {
+	private static boolean controlloComune(String sigla) {
 		//la string deve essere di 1 lettera e 3 numeri
-		if( !(isAlpha(comune.charAt(0)) && isNum(comune.charAt(1)) && isNum(comune.charAt(2)) && isNum(comune.charAt(3)) ) )
+		if( !(isAlpha(sigla.charAt(0)) && isNum(sigla.charAt(1)) && isNum(sigla.charAt(2)) && isNum(sigla.charAt(3)) ) )
 			return false;
-
-//		if(CFManager.CodiciComuni.containsKey(comune))
-//			return true;
-//		else return false;
-		return true;
+		
+		/*
+		 * Ricerca una entry in ComuniSigla che abbia come chiave
+		 * la sigla indicata dal parametro
+		 * Se trova una corrispondenza, ritorna true
+		 * altrimenti ritorna false
+		 */
+		for(Entry<String,String> entry : CFManager.ComuniSigla.entrySet())
+			if(entry.getValue().equals(sigla))
+				return true;
+		
+		return false;
+		
 	}
 	
 	/**

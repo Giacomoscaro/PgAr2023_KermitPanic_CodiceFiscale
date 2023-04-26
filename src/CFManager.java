@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CFManager {
-	public static HashMap<String,String> SiglaComuni = new HashMap<String,String>();
+	public static HashMap<String,String> ComuniSigla = new HashMap<String,String>();
 	
 	private static ArrayList<Persona> input_persone = new ArrayList<Persona>();
     
@@ -103,7 +103,7 @@ public class CFManager {
             codice += cognome_CF(persona.getCognome());
             codice += nome_CF(persona.getNome());
             codice += data_CF(persona.getNascita(), persona.getSesso());
-            codice += SiglaComuni.get(persona.getCitta());
+            codice += ComuniSigla.get(persona.getCitta());
             codice += CodiceFiscale.generaCarattereControllo((codice));
             cf_generati.add(new CodiceFiscale(codice));
         }
@@ -261,7 +261,7 @@ public class CFManager {
                     reader.next();
                     reader.next();
                     String sigla = reader.getText();
-                    SiglaComuni.put(comune, sigla);
+                    ComuniSigla.put(comune, sigla);
                 }
                 reader.next();
             } catch (XMLStreamException e) {

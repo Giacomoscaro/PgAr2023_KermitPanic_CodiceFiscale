@@ -7,6 +7,7 @@ public class Main {
         c.leggi_nomi();
         c.leggiComuni();
         c.genera_cf();
+        
         for (int i=0; i<100; i++) {
             System.out.println(c.getCf_generati().get(i).toString());
             if(CodiceFiscale.isValid(c.getCf_generati().get(i).toString()))
