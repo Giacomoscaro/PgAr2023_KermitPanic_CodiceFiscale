@@ -256,7 +256,7 @@ public class CodiceFiscale {
 	 */
 	public static char generaCarattereControllo(String codice) {
 		if(codice.length() != 15) //il codice in input deve essere di 15 caratteri
-			return 'z'; //valurare se sollevare un'eccezione
+			return '0'; //valurare se sollevare un'eccezione
 		
 		/*
 		 * Sommare il valore dei caratteri del CF usado i mapping

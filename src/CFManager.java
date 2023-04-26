@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CFManager {
-    private final ArrayList<Persona> input_persone = new ArrayList<Persona>();
+	public static HashMap<String,String> SiglaComuni = new HashMap<String,String>();
+	
+	private static ArrayList<Persona> input_persone = new ArrayList<Persona>();
+    
 
     public CFManager() {
     }
@@ -17,21 +20,7 @@ public class CFManager {
     }
 
 
-    FileInputStream file;
-    XMLInputFactory input = XMLInputFactory.newInstance();
-    XMLStreamReader reader;
-
-    {//inizializzazione dello StreamReader per leggere il file InputPersone.xml
-        try {
-            file = new FileInputStream("fileXML/InputPersone.xml");
-            reader = input.createXMLStreamReader(file);
-            reader.next();
-            leggi_nomi(reader);
-        } catch (Exception e) {
-            System.out.println("Errore nell'inizializzazione del reader:");
-            System.out.println(e.getMessage());
-        }
-    }
+    
 
 
     /**
@@ -41,8 +30,23 @@ public class CFManager {
      * @param reader è lo strumento per il parsing inizializzato per
      *               leggere dal file InputPersone.xml
      */
-    public void leggi_nomi(XMLStreamReader reader) {
-        while (true) {//continua finché non viene lanciata un'eccezione quando sono finiti gli eventi dell'xml
+    public void leggi_nomi() {
+    	FileInputStream file;
+        XMLInputFactory input = XMLInputFactory.newInstance();
+        XMLStreamReader reader=null;
+
+        {//inizializzazione dello StreamReader per leggere il file InputPersone.xml
+            try {
+                file = new FileInputStream("fileXML/InputPersone.xml");
+                reader = input.createXMLStreamReader(file);
+                reader.next();
+            } catch (Exception e) {
+                System.out.println("Errore nell'inizializzazione del reader:");
+                System.out.println(e.getMessage());
+            }
+        }
+    	
+    	while (true) {//continua finché non viene lanciata un'eccezione quando sono finiti gli eventi dell'xml
             try {
                 if (!reader.hasNext()) break;
                 if (reader.getEventType() == XMLStreamConstants.START_ELEMENT && reader.getLocalName().equals("persona")) {
@@ -224,56 +228,47 @@ public class CFManager {
         return data_cf;
     }
 
-
-    FileInputStream file1;
-    XMLInputFactory input1 = XMLInputFactory.newInstance();
-    XMLStreamReader reader1;
-
-    {//inizializzazione dello StreamReader per leggere il file Comuni.xml
+    /**
+    * Legge i nomi dei comuni e le sigle a loro associate dal file Comuni.xml
+    * e li associa tra loro
+    */
+    public static void leggiComuni() {
+    	FileInputStream file;
+        XMLInputFactory input = XMLInputFactory.newInstance();
+        XMLStreamReader reader=null;
+        
+      //inizializzazione dello StreamReader per leggere il file Comuni.xml
         try {
-            file1 = new FileInputStream("fileXML/Comuni.xml");
-            reader1 = input1.createXMLStreamReader(file1);
-            reader1.next();
+            file = new FileInputStream("fileXML/Comuni.xml");
+            reader = input.createXMLStreamReader(file);
+            reader.next();
             //leggi_comuni_e_sigle(reader1);
         } catch (Exception e) {
             System.out.println("Errore nell'inizializzazione del reader:");
             System.out.println(e.getMessage());
         }
-    }
-    //private final ArrayList<String> comuni = new ArrayList<String>();
-    //private final ArrayList<String> sigle = new ArrayList<String>();
-
-    /*public void leggi_comuni_e_sigle(XMLStreamReader reader1){
-
-    }*/
-
-    /**
-     * Legge i nomi dei comuni e le sigle a loro associate dal file Comuni.xml
-     * e li associa tra loro
-     */
-    HashMap<String,String> SiglaComuni = new HashMap<String,String>()
-    {{
+        
         while(true) {
             try {
-                if (!reader1.hasNext()) break;
-                if (reader1.getEventType() == XMLStreamConstants.START_ELEMENT && reader1.getLocalName().equals("comune")) {
-                    reader1.next();
-                    reader1.next();
-                    reader1.next();
-                    String comune = reader1.getText();
-                    reader1.next();
-                    reader1.next();
-                    reader1.next();
-                    reader1.next();
-                    String sigla = reader1.getText();
-                    put(comune, sigla);
+                if (!reader.hasNext()) break;
+                if (reader.getEventType() == XMLStreamConstants.START_ELEMENT && reader.getLocalName().equals("comune")) {
+                    reader.next();
+                    reader.next();
+                    reader.next();
+                    String comune = reader.getText();
+                    reader.next();
+                    reader.next();
+                    reader.next();
+                    reader.next();
+                    String sigla = reader.getText();
+                    SiglaComuni.put(comune, sigla);
                 }
-                reader1.next();
+                reader.next();
             } catch (XMLStreamException e) {
                 throw new RuntimeException(e);
             }
         }
-    }};
+    }
 
 
 }
