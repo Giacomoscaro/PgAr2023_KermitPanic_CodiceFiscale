@@ -236,18 +236,12 @@ public class CFManager {
             file1 = new FileInputStream("fileXML/Comuni.xml");
             reader1 = input1.createXMLStreamReader(file1);
             reader1.next();
-            //leggi_comuni_e_sigle(reader1);
         } catch (Exception e) {
             System.out.println("Errore nell'inizializzazione del reader:");
             System.out.println(e.getMessage());
         }
     }
-    //private final ArrayList<String> comuni = new ArrayList<String>();
-    //private final ArrayList<String> sigle = new ArrayList<String>();
 
-    /*public void leggi_comuni_e_sigle(XMLStreamReader reader1){
-
-    }*/
 
     /**
      * Legge i nomi dei comuni e le sigle a loro associate dal file Comuni.xml
@@ -275,6 +269,9 @@ public class CFManager {
             }
         }
     }};
+    /**
+     * Lista di codici fiscali presi dal file CodiciFiscali.xml
+     */
     private final ArrayList<CodiceFiscale> codici_input = new ArrayList<>();
 
     public ArrayList<CodiceFiscale> getCodici_input() {
@@ -299,6 +296,37 @@ public class CFManager {
         } catch (Exception e) {
             System.out.println("Errore nell'inizializzazione del reader:");
             System.out.println(e.getMessage());
+        }
+    }
+
+    private final ArrayList<CodiceFiscale> codici_invalidi = new ArrayList<>();
+    private final ArrayList<CodiceFiscale> codici_spaiati = new ArrayList<>();
+
+    /**
+     * Ricevendo un codice come input controlla se questo corrisponde a uno dei codici
+     * generati dal programma coi dati delle persone registrate
+     * @param codice il codice da controllare
+     * @return l'indice della lista di codici fiscali generati nel quale si trova un codice
+     *         appaiato a quello da controllare
+     */
+    public int appaiato(CodiceFiscale codice) {
+        for (int i = 0; i < cf_generati.size(); i++)
+            if (codice.equals(cf_generati.get(i))) return i;
+        return -1;
+    }
+
+    /**
+     * Controlla ogni codice fiscale letto dal file xml e se è invalido lo aggiunge alla lista di quelli invalidi,
+     * se non corrisponde a nessuno dei cf delle persone di cui sappiamo i dati lo aggiunge alla lista dei
+     * cf spaiati, mentre se il cf risulta appaiato lo aggiunge all'oggetto Persona corrispondente
+     */
+    public void filtraggio_CF(){
+        for(CodiceFiscale c : codici_input) {
+            if(!CodiceFiscale.isValid(c.toString()))
+                codici_invalidi.add(c);
+            else if(appaiato(c)==-1)
+                codici_spaiati.add(c);
+            else input_persone.get(appaiato(c)).setCf(c);//l'indice restituito da appaiato() è sia l'indice del cf generato sia quello della persona inserita dall'xml nelle rispettive liste
         }
     }
 

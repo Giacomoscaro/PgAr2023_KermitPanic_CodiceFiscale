@@ -11,7 +11,7 @@ public class Main {
                 System.out.println("VALIDO");
             else System.out.println("NON VALIDO");
         }*/
-        for ( int i = 0 ; i < 100 ; i++ ) {
+        for ( int i = 0 ; i < 10 ; i++ ) {
             System.out.println(c.getCodici_input().get(i).toString());
         }
 
