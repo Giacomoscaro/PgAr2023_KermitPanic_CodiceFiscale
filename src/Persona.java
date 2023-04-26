@@ -20,6 +20,7 @@ public class Persona {
         this.sesso = sesso;
         this.nascita = nascita;
         this.citta = citta;
+        this.cf = new CodiceFiscale("ASSENTE");
     }
 
     public String getNome() {

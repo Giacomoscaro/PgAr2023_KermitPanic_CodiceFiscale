@@ -1,8 +1,6 @@
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.*;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -311,7 +309,9 @@ public class CFManager {
      */
     public int appaiato(CodiceFiscale codice) {
         for (int i = 0; i < cf_generati.size(); i++)
-            if (codice.equals(cf_generati.get(i))) return i;
+            if (codice.toString().equals(cf_generati.get(i).toString())) {
+                return i;
+            }
         return -1;
     }
 
@@ -330,5 +330,100 @@ public class CFManager {
         }
     }
 
+    FileOutputStream risultato;
+    XMLOutputFactory output = XMLOutputFactory.newInstance();
+    XMLStreamWriter writer;
+    {
+        try{//inizializzazione del writer per generare l'xml definitivo
+            risultato = new FileOutputStream("fileXML/Risultato");
+            writer = output.createXMLStreamWriter(risultato);
+            writer.writeStartDocument("UTF-8", "1.0");
+        }catch (Exception e) {
+        System.out.println("Errore nell'inizializzazione del writer:");
+        System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Usa il writer per scrivere tutti i dati delle persone con la grammatica xml
+     * @param writer il writer per accedere al file
+     * @throws XMLStreamException
+     */
+    public void scrivi_persone(XMLStreamWriter writer) throws XMLStreamException {
+        writer.writeStartElement("persone");
+        writer.writeAttribute("numero_persone", Integer.toString(input_persone.size()));
+        for(Persona persona : input_persone){
+            writer.writeStartElement("persona");
+            writer.writeAttribute("id", Integer.toString(input_persone.indexOf(persona)));
+            writer.writeStartElement("nome");
+            writer.writeCharacters(persona.getNome());
+            writer.writeEndElement();
+            writer.writeStartElement("cognome");
+            writer.writeCharacters(persona.getCognome());
+            writer.writeEndElement();
+            writer.writeStartElement("sesso");
+            writer.writeCharacters(Character.toString(persona.getSesso().name().charAt(0)));
+            writer.writeEndElement();
+            writer.writeStartElement("comune_nascita");
+            writer.writeCharacters(persona.getCitta());
+            writer.writeEndElement();
+            writer.writeStartElement("data_nascita");
+            writer.writeCharacters(persona.getNascita().toString());
+            writer.writeEndElement();
+            writer.writeStartElement("codice_fiscale");
+            writer.writeCharacters(persona.getCf().toString());
+            writer.writeEndElement();
+            writer.writeEndElement();
+        }
+    }
+
+    /**
+     * Usa il writer per scrivere una lista dei codici fiscali invalidi con la grammatica xml
+     * @param writer il writer per accedere al file
+     * @throws XMLStreamException
+     */
+    public void scrivi_cf_invalidi(XMLStreamWriter writer) throws XMLStreamException {
+        writer.writeStartElement("invalidi");
+        writer.writeAttribute("numero_cf_invalidi", Integer.toString(codici_invalidi.size()));
+        for(CodiceFiscale codice : codici_invalidi){
+            writer.writeStartElement("codice");
+            writer.writeCharacters(codice.toString());
+            writer.writeEndElement();
+        }
+        writer.writeEndElement();
+    }
+    /**
+     * Usa il writer per scrivere una lista dei codici fiscali spaiati con la grammatica xml
+     * @param writer il writer per accedere al file
+     * @throws XMLStreamException
+     */
+    public void scrivi_cf_spaiati(XMLStreamWriter writer) throws XMLStreamException {
+        writer.writeStartElement("spaiati");
+        writer.writeAttribute("numero_cf_spaiati", Integer.toString(codici_spaiati.size()));
+        for(CodiceFiscale codice : codici_spaiati){
+            writer.writeStartElement("codice");
+            writer.writeCharacters(codice.toString());
+            writer.writeEndElement();
+        }
+        writer.writeEndElement();
+    }
+
+    /**
+     * Raccoglie gli altri metodi di scrittura dati e scrive il file xml definitivo
+     * @param writer il writer per accedere al file
+     * @throws XMLStreamException
+     */
+    public void scrivi_Risultato(XMLStreamWriter writer) throws XMLStreamException {
+        writer.writeStartElement("output");
+        scrivi_persone(writer);
+        writer.writeStartElement("codici");
+        scrivi_cf_invalidi(writer);
+        scrivi_cf_spaiati(writer);
+        writer.writeEndElement();
+        writer.writeEndElement();
+        writer.writeEndDocument();
+        writer.flush();
+        writer.close();
+    }
 }
 

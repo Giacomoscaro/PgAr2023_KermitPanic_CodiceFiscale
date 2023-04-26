@@ -279,7 +279,9 @@ public class CodiceFiscale {
 	 * @return vero se il codice fiscale è valido
 	 */
 	public static boolean isValid(String codice){
-        
+        if(codice.length()<16) {
+			return false;
+		}
 		/*
 		 *  FST  PLA  98   M  01    B157   E
 		 *  
