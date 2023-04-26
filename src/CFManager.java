@@ -160,11 +160,11 @@ public class CFManager {
             for (int i = 0; i < nome.length(); i++) {
                 if (cont == 3) break;
                 if (nome.charAt(i) != 'A' && nome.charAt(i) != 'E' && nome.charAt(i) != 'I' && nome.charAt(i) != 'O' && nome.charAt(i) != 'U') {
-                       if(consonanti_aggiunte != 1) {
-                           nome_cf += nome.charAt(i);
-                           cont++;
-                       }
-                       consonanti_aggiunte++;
+                    if (consonanti_aggiunte != 1) {
+                        nome_cf += nome.charAt(i);
+                        cont++;
+                    }
+                    consonanti_aggiunte++;
                 }
             }
         } else {
@@ -203,24 +203,26 @@ public class CFManager {
         }
         return -1;
     }*/
+
     /**
      * Seleziona le cifre del mese e del giorno e la lettera del mese
      * per il codice fiscale secondo le linee guida
      *
-     * @param data la data di nascita della persona
+     * @param data  la data di nascita della persona
      * @param sesso il sesso della persona
      * @return stringa con due cifre finali dell'anno, lettera del mese, due cifre del giorno
      */
-    public String data_CF(Data data, Persona.Sesso sesso){
+    public String data_CF(Data data, Persona.Sesso sesso) {
         String data_cf = "";
         int f = 0;
-        data_cf+=(Integer.toString(data.getAnno()).substring(2));//servono solo le ultime due cifre dell'anno
-        data_cf+=(CodiceFiscale.MeseCarattere.get(data.getMese()));
+        data_cf += (Integer.toString(data.getAnno()).substring(2));//servono solo le ultime due cifre dell'anno
+        data_cf += (CodiceFiscale.MeseCarattere.get(data.getMese()));
         int giorno = data.getGiorno();
-        if(sesso.equals(Persona.Sesso.Femmina))giorno+=40;//se la persona è donna al numero del giorno va aggiunto 40
-        if(giorno<10)//se la data è una sola cifra va preceduta da uno zero
-            data_cf+="0"+(giorno);
-        else data_cf+=(giorno);
+        if (sesso.equals(Persona.Sesso.Femmina))
+            giorno += 40;//se la persona è donna al numero del giorno va aggiunto 40
+        if (giorno < 10)//se la data è una sola cifra va preceduta da uno zero
+            data_cf += "0" + (giorno);
+        else data_cf += (giorno);
         return data_cf;
     }
 
@@ -251,9 +253,8 @@ public class CFManager {
      * Legge i nomi dei comuni e le sigle a loro associate dal file Comuni.xml
      * e li associa tra loro
      */
-    HashMap<String,String> SiglaComuni = new HashMap<String,String>()
-    {{
-        while(true) {
+    HashMap<String, String> SiglaComuni = new HashMap<String, String>() {{
+        while (true) {
             try {
                 if (!reader1.hasNext()) break;
                 if (reader1.getEventType() == XMLStreamConstants.START_ELEMENT && reader1.getLocalName().equals("comune")) {
@@ -274,7 +275,32 @@ public class CFManager {
             }
         }
     }};
+    private final ArrayList<CodiceFiscale> codici_input = new ArrayList<>();
 
+    public ArrayList<CodiceFiscale> getCodici_input() {
+        return codici_input;
+    }
+    FileInputStream file2;
+    XMLInputFactory input2 = XMLInputFactory.newInstance();
+    XMLStreamReader reader2;
+
+    {//inizializzazione dello StreamReader per leggere il file CodiciFiscali.xml
+        try {
+            file2 = new FileInputStream("fileXML/CodiciFiscali.xml");
+            reader2 = input2.createXMLStreamReader(file2);
+            reader2.next();
+            while (reader2.hasNext()) {
+                if (reader2.getEventType() == XMLStreamConstants.START_ELEMENT && reader2.getLocalName().equals("codice")) {
+                    reader2.next();
+                    codici_input.add(new CodiceFiscale(reader2.getText()));
+                }
+                reader2.next();
+            }
+        } catch (Exception e) {
+            System.out.println("Errore nell'inizializzazione del reader:");
+            System.out.println(e.getMessage());
+        }
+    }
 
 }
 

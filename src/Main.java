@@ -5,11 +5,14 @@ public class Main {
         System.out.println(d.toString());
         CFManager c = new CFManager();
         c.genera_cf();
-        for (int i=0; i<100; i++) {
+        /*for (int i=0; i<100; i++) {
             System.out.println(c.getCf_generati().get(i).toString());
             if(CodiceFiscale.isValid(c.getCf_generati().get(i).toString()))
                 System.out.println("VALIDO");
             else System.out.println("NON VALIDO");
+        }*/
+        for ( int i = 0 ; i < 100 ; i++ ) {
+            System.out.println(c.getCodici_input().get(i).toString());
         }
 
     }
